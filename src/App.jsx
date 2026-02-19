@@ -474,7 +474,7 @@ Family: ${adults} adult(s), ${numKids} kid(s) (${agesStr}). Diet: ${diets.length
 Return ONLY valid JSON (no markdown):
 {"days":[{"day":"Monday","meals":{"Breakfast":{"name":"...","emoji":"...","desc":"..."},"Lunch":{"name":"...","emoji":"...","desc":"..."},"Dinner":{"name":"...","emoji":"...","desc":"..."},"Snack":{"name":"...","emoji":"...","desc":"..."}}}]}
 All 7 days required. Respect all restrictions. Kid snacks fun and simple.`;
-  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":"YOUR_API_KEY_HERE","anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":import.meta.env.VITE_ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
   const data = await res.json();
   return JSON.parse(data.content?.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim());
 }
@@ -484,7 +484,7 @@ async function generateShoppingList(weekPlan) {
   const prompt = `Family meals this week: ${allMeals}. Generate a practical grouped shopping list with quantities.
 Return ONLY valid JSON:{"categories":[{"name":"Produce","emoji":"🥦","items":["2 lbs broccoli"]},{"name":"Proteins","emoji":"🥩","items":[]},{"name":"Dairy & Eggs","emoji":"🧀","items":[]},{"name":"Pantry & Grains","emoji":"🫙","items":[]},{"name":"Breads & Bakery","emoji":"🍞","items":[]},{"name":"Snacks & Extras","emoji":"🍎","items":[]}]}
 Include realistic quantities, combine duplicates, omit staples like salt/pepper/oil. Only include categories with items.`;
-  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":"YOUR_API_KEY_HERE","anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:[{role:"user",content:prompt}]})});
+  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":import.meta.env.VITE_ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:[{role:"user",content:prompt}]})});
   const data = await res.json();
   return JSON.parse(data.content?.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim());
 }
@@ -494,7 +494,7 @@ async function regenerateMeal(family, day, mealType) {
   const agesStr = kidAges.filter(Boolean).length?`ages ${kidAges.filter(Boolean).join(", ")}`:"unspecified ages";
   const prompt = `ONE ${mealType} meal. Family: ${adults} adults, ${numKids} kids (${agesStr}). Diet: ${diets.join(", ")||"none"}. Budget: ${budget}. Avoid: ${allergies||"none"}.
 Return ONLY: {"name":"...","emoji":"...","desc":"..."}`;
-  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":"YOUR_API_KEY_HERE","anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:prompt}]})});
+  const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":import.meta.env.VITE_ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:prompt}]})});
   const data = await res.json();
   return JSON.parse(data.content?.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim());
 }
